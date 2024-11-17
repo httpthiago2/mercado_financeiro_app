@@ -2,7 +2,7 @@ import 'package:mercado_financeiro_app/models/ativo_model.dart';
 import 'package:mercado_financeiro_app/services/ativo_service.dart';
 
 class HomeController {
-  AtivoService _ativoService = AtivoService();
+  final AtivoService _ativoService = AtivoService();
 
   HomeController();
 

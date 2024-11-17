@@ -26,7 +26,7 @@ class AtivoService {
       throw const ValidacaoException('O ticker precisa ser preenchido e ter pelo menos 3 caracteres');
     }
 
-    final response = await dio.get('https://brapi.dev/api/quote/list?limit=10&sortOrder=desc&sortBy=volume&search=${ticker}');
+    final response = await dio.get('https://brapi.dev/api/quote/list?limit=10&sortOrder=desc&sortBy=volume&search=$ticker');
 
     if (response.statusCode != 200) {
       debugPrint(response.statusMessage);

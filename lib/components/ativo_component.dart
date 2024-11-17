@@ -21,7 +21,7 @@ class AtivoComponent extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: EdgeInsets.only(right: 15),
+      margin: const EdgeInsets.only(right: 15),
       decoration: BoxDecoration(
           color: ColorConstants.PRIMARY,
           borderRadius: BorderRadius.circular(15)),
@@ -62,7 +62,7 @@ class AtivoComponent extends StatelessWidget {
                 ),
                 Text(
                   '${variacao.toStringAsFixed(2)} %',
-                  style: TextStyle(color: Colors.white, fontSize: 14),
+                  style: const TextStyle(color: Colors.white, fontSize: 14),
                 ),
               ]),
             ],
