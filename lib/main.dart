@@ -1,8 +1,6 @@
-import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:mercado_financeiro_app/constants/color_constants.dart';
 import 'package:mercado_financeiro_app/pages/home_page.dart';
-import 'package:mercado_financeiro_app/services/ativo_service.dart';
 
 void main() {
   runApp(const MainApp());
