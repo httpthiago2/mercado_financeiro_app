@@ -3,7 +3,6 @@ import 'package:mercado_financeiro_app/components/ativo_component.dart';
 import 'package:mercado_financeiro_app/components/ativo_pesquisa_component.dart';
 import 'package:mercado_financeiro_app/constants/color_constants.dart';
 import 'package:mercado_financeiro_app/controllers/home_controller.dart';
-import 'package:mercado_financeiro_app/enums/tipo_ativo_enum.dart';
 import 'package:mercado_financeiro_app/exceptions/validacao_exception.dart';
 import 'package:mercado_financeiro_app/models/ativo_model.dart';
 import 'package:mercado_financeiro_app/utils/dialog_utils.dart';
@@ -17,26 +16,7 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   List<AtivoModel> ativos = [];
-  List<AtivoModel> ativosPesquisa = [
-    AtivoModel(
-      ticker: 'PETR4',
-      nome: 'Petrobrás',
-      valor: 37,
-      variacao: 1.5,
-      urlImagem:
-          'https://s3-symbol-logo.tradingview.com/brasileiro-petrobras--big.svg',
-      tipoAtivo: TipoAtivoEnum.stock,
-    ),
-    AtivoModel(
-      ticker: 'PETR4',
-      nome: 'Petrobrás',
-      valor: 37,
-      variacao: 1.5,
-      urlImagem:
-          'https://s3-symbol-logo.tradingview.com/brasileiro-petrobras--big.svg',
-      tipoAtivo: TipoAtivoEnum.stock,
-    ),
-  ];
+  List<AtivoModel> ativosPesquisa = [];
   HomeController homeController = HomeController();
   final TextEditingController _buscaEC = TextEditingController();
 
@@ -115,13 +95,14 @@ class _HomePageState extends State<HomePage> {
                     child: TextField(
                       controller: _buscaEC,
                       decoration: InputDecoration(
-
-                        suffixIcon: IconButton(onPressed: () {
-                          _buscaEC.text = '';
-                          setState(() {
-                            ativosPesquisa = [];
-                          });
-                        }, icon: const Icon(Icons.close)),
+                        suffixIcon: IconButton(
+                            onPressed: () {
+                              _buscaEC.text = '';
+                              setState(() {
+                                ativosPesquisa = [];
+                              });
+                            },
+                            icon: const Icon(Icons.close)),
                         border: const OutlineInputBorder(),
                         hintText: 'Digite o ticker do ativo...',
                         filled: true,
@@ -148,16 +129,27 @@ class _HomePageState extends State<HomePage> {
                 ],
               ),
             ),
-            const SizedBox(height: 30,),
+            const SizedBox(
+              height: 30,
+            ),
             SizedBox(
               height: 300,
               child: ListView.separated(
-                  itemBuilder: (context, index) => AtivoPesquisaComponent(
-                      urlImagem: ativosPesquisa[index].urlImagem,
-                      ticker: ativosPesquisa[index].ticker,
-                      nome: ativosPesquisa[index].nome,
-                      preco: ativosPesquisa[index].valor,
-                      tipo: ativosPesquisa[index].tipoAtivo),
+                  itemBuilder: (context, index) => GestureDetector(
+                        onTap: () {
+                          Navigator.pushNamed(
+                            context,
+                            '/ativo',
+                            arguments: {'ticker': ativosPesquisa[index].ticker},
+                          );
+                        },
+                        child: AtivoPesquisaComponent(
+                            urlImagem: ativosPesquisa[index].urlImagem,
+                            ticker: ativosPesquisa[index].ticker,
+                            nome: ativosPesquisa[index].nome,
+                            preco: ativosPesquisa[index].valor,
+                            tipo: ativosPesquisa[index].tipoAtivo),
+                      ),
                   separatorBuilder: (context, index) => const Divider(),
                   itemCount: ativosPesquisa.length),
             )
