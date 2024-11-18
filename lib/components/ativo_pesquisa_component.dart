@@ -1,7 +1,7 @@
 import 'package:brasil_fields/brasil_fields.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:mercado_financeiro_app/constants/color_constants.dart';
+import 'package:mercado_financeiro_app/components/tipo_ativo_badge_component.dart';
 import 'package:mercado_financeiro_app/enums/tipo_ativo_enum.dart';
 
 class AtivoPesquisaComponent extends StatelessWidget {
@@ -56,20 +56,7 @@ class AtivoPesquisaComponent extends StatelessWidget {
           const SizedBox(
             width: 20,
           ),
-          Container(
-            height: 30,
-            width: 70,
-            decoration: BoxDecoration(
-              color: ColorConstants.PRIMARY,
-              borderRadius: BorderRadius.circular(15)
-            ),
-            child: Center(
-              child: Text(
-                tipo.descricao,
-                style: const TextStyle(color: Colors.white),
-              ),
-            ),
-          ),
+          TipoAtivoBadgeComponent(label: tipo.descricao)
         ],
       ),
     );
