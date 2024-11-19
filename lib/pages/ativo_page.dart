@@ -6,6 +6,7 @@ import 'package:mercado_financeiro_app/controllers/ativo_controller.dart';
 import 'package:mercado_financeiro_app/models/ativo_detalhado_model.dart';
 import 'package:mercado_financeiro_app/models/dados_empresa_model.dart';
 import 'package:mercado_financeiro_app/models/indicadores_model.dart';
+import 'ativo_indicadores_page.dart';
 
 class AtivoPage extends StatefulWidget {
   const AtivoPage({
@@ -40,24 +41,21 @@ class _AtivoPageState extends State<AtivoPage> {
       margemOperacional: 0.0,
       margemLucro: 0.0,
       margemEbitda: 0.0,
+      dividaSobrePatrimonioLiquido: 0.0
     ),
   );
   final AtivoController _ativoController = AtivoController();
+  int _selectedIndex = 0;
+
   @override
   Widget build(BuildContext context) {
     final args =
         ModalRoute.of(context)!.settings.arguments as Map<String, dynamic>;
     String ticker = args['ticker'];
-    return Scaffold(
-      appBar: AppBar(
-        backgroundColor: ColorConstants.PRIMARY,
-        title: const Text(
-          'Visualizar ativo',
-          style: TextStyle(color: Colors.white),
-        ),
-        centerTitle: true,
-      ),
-      body: FutureBuilder(
+
+    // Define as páginas do BottomNavigationBar
+    final List<Widget> _pages = [
+      FutureBuilder(
           future: _ativoController.buscarInformacoesAtivo(ticker),
           builder: (context, snapshot) {
             if (snapshot.connectionState == ConnectionState.waiting) {
@@ -128,65 +126,6 @@ class _AtivoPageState extends State<AtivoPage> {
                       const SizedBox(
                         height: 50,
                       ),
-                      const Text(
-                        'Indicadores',
-                        style: TextStyle(
-                            fontSize: 18, fontWeight: FontWeight.bold),
-                      ),
-                      const SizedBox(
-                        height: 10,
-                      ),
-                      Container(
-                        padding: const EdgeInsets.all(10),
-                        width: MediaQuery.of(context).size.width,
-                        decoration:
-                            BoxDecoration(color: ColorConstants.PRIMARY),
-                        child: const Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              'Preço atual: R\$27,00',
-                              style:
-                                  TextStyle(color: Colors.white, fontSize: 14),
-                            ),
-                            SizedBox(
-                              height: 10,
-                            ),
-                            Text(
-                              'Liquidez Imediata: 0.643',
-                              style:
-                                  TextStyle(color: Colors.white, fontSize: 14),
-                            ),
-                            SizedBox(
-                              height: 10,
-                            ),
-                            Text(
-                              'Liquidez Corrente: 0.935',
-                              style:
-                                  TextStyle(color: Colors.white, fontSize: 14),
-                            ),
-                            SizedBox(
-                              height: 10,
-                            ),
-                            Text(
-                              'Dívida sobre patrimônio líquido: 81.548',
-                              style:
-                                  TextStyle(color: Colors.white, fontSize: 14),
-                            ),
-                            SizedBox(
-                              height: 10,
-                            ),
-                            Text(
-                              'Retorno sobre : 81.548',
-                              style:
-                                  TextStyle(color: Colors.white, fontSize: 14),
-                            ),
-                            SizedBox(
-                              height: 10,
-                            ),
-                          ],
-                        ),
-                      ),
                     ],
                   ),
                 ),
@@ -197,34 +136,37 @@ class _AtivoPageState extends State<AtivoPage> {
               );
             }
           }),
-      bottomNavigationBar: BottomNavigationBar(
+      // Página dos indicadores
+      AtivoIndicadoresPage(
+        indicadoresModel: ativo.indicadores,
+      ),
+    ];
+
+    return Scaffold(
+      appBar: AppBar(
         backgroundColor: ColorConstants.PRIMARY,
-        unselectedItemColor: ColorConstants.PRIMARY,
-        selectedItemColor: Colors.green,
+        title: const Text(
+          'Visualizar ativo',
+          style: TextStyle(color: Colors.white),
+        ),
+        centerTitle: true,
+      ),
+      body: _pages[_selectedIndex],
+      bottomNavigationBar: BottomNavigationBar(
+        currentIndex: _selectedIndex,
+        onTap: (index) {
+          setState(() {
+            _selectedIndex = index;
+          });
+        },
         items: const [
           BottomNavigationBarItem(
-            label: 'Empresa',
-            icon: Icon(
-              Icons.work,
-            ),
+            icon: Icon(Icons.info),
+            label: 'Detalhes',
           ),
           BottomNavigationBarItem(
+            icon: Icon(Icons.analytics),
             label: 'Indicadores',
-            icon: Icon(
-              Icons.bar_chart,
-            ),
-          ),
-          BottomNavigationBarItem(
-            label: 'Dividendos',
-            icon: Icon(
-              Icons.attach_money,
-            ),
-          ),
-          BottomNavigationBarItem(
-            label: 'Histórico',
-            icon: Icon(
-              Icons.history,
-            ),
           ),
         ],
       ),

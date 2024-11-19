@@ -110,7 +110,7 @@ class _HomePageState extends State<HomePage> {
                     ),
                   ),
                   IconButton(
-                    onPressed: () async {
+                    onPressed:() async {
                       try {
                         List<AtivoModel> resposta =
                             await homeController.buscarAtivos(_buscaEC.text);

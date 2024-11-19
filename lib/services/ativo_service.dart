@@ -88,6 +88,7 @@ class AtivoService {
       margemOperacional: NumeroUtils.tratarValoresDouble(financialData['operatingMargins']),
       margemLucro: NumeroUtils.tratarValoresDouble(financialData['profitMargins']),
       margemEbitda: NumeroUtils.tratarValoresDouble(financialData['ebitdaMargins']),
+      dividaSobrePatrimonioLiquido: NumeroUtils.tratarValoresDouble(financialData['debtToEquity']),
     );
 
     AtivoDetalhadoModel ativoDetalhadoModel = AtivoDetalhadoModel(
@@ -98,9 +99,6 @@ class AtivoService {
       dadosEmpresa: dadosEmpresaModel,
       indicadores: indicadoresModel,
     );
-
-    debugPrint('$ativoDetalhadoModel');
-
     return ativoDetalhadoModel;
   }
 }
