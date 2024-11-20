@@ -45,7 +45,7 @@ class _HomePageState extends State<HomePage> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             const Text(
-              'Principais ativos',
+              'Principais ações',
               style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
             ),
             const SizedBox(
@@ -79,7 +79,7 @@ class _HomePageState extends State<HomePage> {
               height: 50,
             ),
             const Text(
-              'Buscar ativo',
+              'Buscar ações',
               style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
             ),
             const SizedBox(
@@ -104,7 +104,7 @@ class _HomePageState extends State<HomePage> {
                             },
                             icon: const Icon(Icons.close)),
                         border: const OutlineInputBorder(),
-                        hintText: 'Digite o ticker do ativo...',
+                        hintText: 'Digite o ticker da ação...',
                         filled: true,
                       ),
                     ),
