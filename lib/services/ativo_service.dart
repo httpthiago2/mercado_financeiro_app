@@ -14,7 +14,7 @@ class AtivoService {
 
   Future<List<AtivoModel>> buscarPrincipaisAtivos() async {
     final response = await dio.get(
-        'https://brapi.dev/api/quote/list?limit=20&sortOrder=desc&sortBy=volume');
+        'https://brapi.dev/api/quote/list?limit=20&sortOrder=desc&sortBy=volume&type=stock');
 
     if (response.statusCode != 200) {
       debugPrint(response.statusMessage);
@@ -33,7 +33,7 @@ class AtivoService {
     }
 
     final response = await dio.get(
-        'https://brapi.dev/api/quote/list?limit=10&sortOrder=desc&sortBy=volume&search=$ticker');
+        'https://brapi.dev/api/quote/list?limit=10&sortOrder=desc&sortBy=volume&search=$ticker&type=stock');
 
     if (response.statusCode != 200) {
       debugPrint(response.statusMessage);
