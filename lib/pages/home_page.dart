@@ -5,6 +5,7 @@ import 'package:mercado_financeiro_app/constants/color_constants.dart';
 import 'package:mercado_financeiro_app/controllers/home_controller.dart';
 import 'package:mercado_financeiro_app/exceptions/validacao_exception.dart';
 import 'package:mercado_financeiro_app/models/ativo_model.dart';
+import 'package:mercado_financeiro_app/pages/dicas_indicadores_page.dart';
 import 'package:mercado_financeiro_app/utils/dialog_utils.dart';
 
 class HomePage extends StatefulWidget {
@@ -32,22 +33,12 @@ class _HomePageState extends State<HomePage> {
     super.initState();
     buscarPrincipaisAtivos();
   }
+  int _selectedIndex = 0;
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: const Color(0xFFF7F7F7),
-      appBar: AppBar(
-        centerTitle: true,
-        title: const Text(
-          'Mercado Financeiro',
-          style: TextStyle(
-            color: Colors.white,
-          ),
-        ),
-        backgroundColor: ColorConstants.PRIMARY,
-      ),
-      body: SingleChildScrollView(
+    final List<Widget> pages = [
+      SingleChildScrollView(
         padding: const EdgeInsets.only(left: 10, top: 30),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.start,
@@ -61,17 +52,26 @@ class _HomePageState extends State<HomePage> {
               height: 10,
             ),
             SizedBox(
-              height: 100,
+              height: 120,
               child: ListView.builder(
                 physics: const BouncingScrollPhysics(),
                 scrollDirection: Axis.horizontal,
                 itemCount: ativos.length,
-                itemBuilder: (context, index) => AtivoComponent(
-                  ticker: ativos[index].ticker,
-                  nome: ativos[index].nome,
-                  valor: ativos[index].valor,
-                  variacao: ativos[index].variacao,
-                  urlImagem: ativos[index].urlImagem,
+                itemBuilder: (context, index) => GestureDetector(
+                  onTap: () {
+                    Navigator.pushNamed(
+                            context,
+                            '/ativo',
+                            arguments: {'ticker': ativos[index].ticker},
+                          );
+                  },
+                  child: AtivoComponent(
+                    ticker: ativos[index].ticker,
+                    nome: ativos[index].nome,
+                    valor: ativos[index].valor,
+                    variacao: ativos[index].variacao,
+                    urlImagem: ativos[index].urlImagem,
+                  ),
                 ),
               ),
             ),
@@ -110,7 +110,7 @@ class _HomePageState extends State<HomePage> {
                     ),
                   ),
                   IconButton(
-                    onPressed:() async {
+                    onPressed: () async {
                       try {
                         List<AtivoModel> resposta =
                             await homeController.buscarAtivos(_buscaEC.text);
@@ -155,6 +155,40 @@ class _HomePageState extends State<HomePage> {
             )
           ],
         ),
+      ),
+      const DicasIndicadoresPage()
+    ];
+
+    return Scaffold(
+      backgroundColor: const Color(0xFFF7F7F7),
+      appBar: AppBar(
+        centerTitle: true,
+        title: const Text(
+          'Mercado Financeiro',
+          style: TextStyle(
+            color: Colors.white,
+          ),
+        ),
+        backgroundColor: ColorConstants.PRIMARY,
+      ),
+      body: pages[_selectedIndex],
+      bottomNavigationBar: BottomNavigationBar(
+        currentIndex: _selectedIndex,
+        onTap: (index) {
+          setState(() {
+            _selectedIndex = index;
+          });
+        },
+        items: const [
+          BottomNavigationBarItem(
+            label: 'Home',
+            icon: Icon(Icons.home),
+          ),
+          BottomNavigationBarItem(
+            label: 'Dicas',
+            icon: Icon(Icons.info),
+          ),
+        ],
       ),
     );
   }
